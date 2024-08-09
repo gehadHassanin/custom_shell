@@ -158,9 +158,8 @@ void ExecuteInternalCmd(InputInfo_t* pInputInfo) {
 
 void RedirectFile(int old_fd, int new_fd) {
     int32_t fd = dup2(old_fd, new_fd);  
-    if (fd == -1) 
-    {
-            perror("dup2");
+    if (fd == -1) {
+        perror("dup2");
     }
     close(old_fd);
 }
@@ -247,27 +246,27 @@ void Parsing(uint8_t __command[], uint8_t *__token[], uint8_t *token_num) {
 }
 
 int8_t Is_ExternalCmd(const uint8_t *cmd) {
-        uint8_t *env_path = getenv("PATH");
-        uint8_t *__token[TOK_NUM];
-        uint8_t token_num;
-        uint8_t full_path[PATH_MAX];
-        if (env_path == NULL)
-        {
-                return -1;
+    uint8_t *env_path = getenv("PATH");
+    uint8_t *__token[TOK_NUM];
+    uint8_t token_num;
+    uint8_t full_path[PATH_MAX];
+    if (env_path == NULL)
+    {
+            return -1;
+    }
+    char *path_dub = strdup(env_path);
+    if (path_dub == NULL) {
+        return -1; 
+    }
+    Parsing(path_dub, __token, &token_num);
+    for (int32_t Iterator = 0; Iterator < token_num; Iterator++) {
+        // CONSTRUCT THE FULL PATH TO THE COMMAND 
+        snprintf(full_path, sizeof(full_path), "%s/%s", __token[Iterator], cmd); 
+        if (CheckFileInPath(full_path) == 0) {
+            return 0;
         }
-        char *path_dub = strdup(env_path);
-        if (path_dub == NULL) {
-            return -1; 
-        }
-        Parsing(path_dub, __token, &token_num);
-        for (int32_t Iterator = 0; Iterator < token_num; Iterator++) {
-            // CONSTRUCT THE FULL PATH TO THE COMMAND 
-            snprintf(full_path, sizeof(full_path), "%s/%s", __token[Iterator], cmd); 
-            if (CheckFileInPath(full_path) == 0) {
-                return 0;
-            }
-        } 
-        return -1;     
+    } 
+    return -1;     
 }
 
 uint32_t Get_Size(ProcessHist_t *pHistory) {
@@ -283,23 +282,23 @@ void Push_Process(ProcessHist_t *pHistory, ProcessInfo_t *pInfo) {
 }
 
 void ParsingInputInfo(InputInfo_t* pInputInfo) {
-        pInputInfo->token_num = 0;
-        pInputInfo->redir_num = 0;
-        for (int32_t Iterator = 0; Iterator < BUFF_SIZE; Iterator++) {
-            pInputInfo-> __token[Iterator] = NULL;
-            pInputInfo-> __redir[Iterator] = NULL;
-        }
-        uint8_t* token = strtok(pInputInfo->__command, SPACE_DELIMETER);
-        while (token != NULL && !(IS_REDIR_SYMBOL(token))) {
-            pInputInfo->__token[(pInputInfo->token_num)++] = token;
+    pInputInfo->token_num = 0;
+    pInputInfo->redir_num = 0;
+    for (int32_t Iterator = 0; Iterator < BUFF_SIZE; Iterator++) {
+        pInputInfo-> __token[Iterator] = NULL;
+        pInputInfo-> __redir[Iterator] = NULL;
+    }
+    uint8_t* token = strtok(pInputInfo->__command, SPACE_DELIMETER);
+    while (token != NULL && !(IS_REDIR_SYMBOL(token))) {
+        pInputInfo->__token[(pInputInfo->token_num)++] = token;
+        token = strtok(NULL, SPACE_DELIMETER);
+    }
+    if (token != NULL) {
+        while (token != NULL) {
+            pInputInfo->__redir[(pInputInfo->redir_num)++] = token;
             token = strtok(NULL, SPACE_DELIMETER);
         }
-        if (token != NULL) {
-            while (token != NULL) {
-                    pInputInfo->__redir[(pInputInfo->redir_num)++] = token;
-                    token = strtok(NULL, SPACE_DELIMETER);
-            }
-        }
+    }
 }
 
 void clearBuffer(uint8_t* buf, int32_t size) {

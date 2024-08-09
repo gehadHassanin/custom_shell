@@ -54,14 +54,13 @@ void ImplementCatCommand(uint8_t argc, uint8_t** argv) {
         if (argc == 2 && CheckFileInPath(pathBuf) != -1) {
             int32_t fd = open(argv[1], O_RDONLY);
             if (fd == -1) {
-                    perror("cat");
-                    close(fd);
+                perror("cat");
+                close(fd);
             }
             do {
                 bytesR = read(fd, buff, 100);
                 bytesW = write(STDOUT, buff, bytesR);
-                if (fd != -1 && bytesW == -1) 
-                {
+                if (fd != -1 && bytesW == -1) {
                     perror("cat");
                     close(fd);
                     break;

@@ -1,8 +1,7 @@
 #ifndef CMD_H_
 #define CMD_H_
 
-#define COLON_DELIMETER (":")
-#define SPACE_DELIMETER (" ")
+
 
 /**
  * @brief  : This function is used to clear screen
