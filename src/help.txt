@@ -1,0 +1,37 @@
+Supported Internal commands are:
+
+    [1] --> mycp: copy a file to another file.
+
+    [2] --> mymv: move a file to another place.
+
+    [3] --> mypwd: print working directory.
+
+    [4] --> mycat: concatenate files and print on the standard output.
+
+    [5] --> myecho: print a user input string on stdout.
+
+    [6] --> myrealpath:  Print the resolved absolute file name.
+
+    [7] --> exit: terminate the shell.
+
+    [8] --> myrm: remove files 
+
+    [9] --> myrmdir: remove directories
+
+    [10] --> envir: print all the environment variables
+
+    [11] --> type: return the type of the command (internal, external or unsupported command)
+
+    [12] --> phist: Lists the last 10 processes with their exit status.
+
+    [13] --> cd: change the current directory
+
+    [14] --> myclear: clear the terminal screen
+
+    [15] --> myuptime: This command contains two numbers (values in seconds): 
+                       1) the uptime of the system (including time spent in suspend)  
+                       2) the amount of time spent in the idle process.
+
+    [16] --> myfree: 1) print RAM info ( total size, used and free) 
+                     2) Swap area info (total size, used, free)
+
