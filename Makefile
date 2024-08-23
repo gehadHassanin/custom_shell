@@ -6,19 +6,21 @@ CFLAGS := -Wno-pointer-sign -Wno-incompatible-pointer-types -g
 SRCS := $(wildcard ./src/*.c)
 OBJS := $(SRCS:.c=.o)
 
+EXEC := build
+
 # PHONY TARGETS
 .PHONY: all build run clean
 
 # RULE TO BUILD AND RUN THE PROGRAM
-all: build run
+all: clean build run
 
 # RULE TO BUILD THE PROGRAM
 build: $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) -o $@
 
 # RULE RUN THE PROGRAM
-run:  
-	@./build
+run: 
+	@./$(EXEC)
 
 # RULE TO COMPILE .c FILES TO .o FILES
 %.o: %.c

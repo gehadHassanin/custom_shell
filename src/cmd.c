@@ -51,7 +51,7 @@ void ImplementCatCommand(uint8_t argc, uint8_t** argv) {
         ssize_t bytesR = 0;
         uint8_t pathBuf[PATH_MAX];
         realpath(argv[1], pathBuf);
-        if (argc == 2 && CheckFileInPath(pathBuf) != -1) {
+        if (argc > 1 && CheckFileInPath(pathBuf) != -1) {
             int32_t fd = open(argv[1], O_RDONLY);
             if (fd == -1) {
                 perror("cat");
@@ -264,15 +264,18 @@ void Redirection(InputInfo_t* pInputInfo, uint8_t *buf) {
     err_flag = kOff;
     ssize_t ret = readlink("/proc/self/fd/0", buf, BUFF_SIZE);
     while (idx < pInputInfo->redir_num) {
-        if (!strcmp(pInputInfo->__redir[idx], ">")) {
+        if (IS_OUT_REDIRECTIONT(pInputInfo->__redir[idx])) {
             out_flag = kOn;
-            fd = open(pInputInfo->__redir[++idx], O_WRONLY | O_CREAT, S_IRWXU);
+            int32_t flag = IS_APPEND(pInputInfo->__redir[idx]) ? (O_WRONLY | O_CREAT | O_APPEND) :
+                                                                 (O_WRONLY | O_CREAT);
+            fd = open(pInputInfo->__redir[++idx], flag, S_IRWXU);
+            printf("%d\n", fd);
             if (fd == -1) {
                 perror("open");
             } else {
                 RedirectFile(fd, STDOUT);
             }       
-        } else if (!strcmp(pInputInfo->__redir[idx], "<")) { 
+        } else if (IS_INP_REDIRECTIONT(pInputInfo->__redir[idx])) { 
             inp_flag = kOn;
             fd = open(pInputInfo->__redir[++idx], O_RDONLY | O_CREAT, S_IRWXU);
             if (fd == -1) {
@@ -280,7 +283,7 @@ void Redirection(InputInfo_t* pInputInfo, uint8_t *buf) {
             } else {
                 RedirectFile(fd, STDIN);
             }
-        } else if (!strcmp(pInputInfo->__redir[idx], "2>")) {
+        } else if (IS_ERR_REDIRECTIONT(pInputInfo->__redir[idx])) {
             err_flag = kOn;
             fd = open(pInputInfo->__redir[++idx], O_WRONLY | O_CREAT, S_IRWXU);
             if (fd == -1) {
@@ -290,6 +293,8 @@ void Redirection(InputInfo_t* pInputInfo, uint8_t *buf) {
             }
         }
         ++idx;
+        close(fd);
+        
     }
 }
 

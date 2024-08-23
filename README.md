@@ -9,7 +9,7 @@
 - [Examples](#examples)
 
 ## Introduction 
-This project is a custom shell implementation that supports some internal and external commands. It is designed to provide basic shell functionality with additional features, including input/output/error redirection and piping
+This project is a custom shell implementation that supports some internal and external commands. It is designed to provide basic shell functionality with additional features, including input/output/error redirection.
 
 ## Usage 
 ### you can use only this command 
@@ -23,9 +23,6 @@ make all
 - Redirect output using `>`
 - Redirect error output using `2>`
 - Append output using `>>`
-
-### 2) Piping:
-Support for piping between two processes using `|`
 
 ## External Commands 
 
@@ -67,4 +64,3 @@ Support for piping between two processes using `|`
 | myuptime |  print the uptime for the system and the time spent in the idle process   |  no           | myuptime | 
 | myfree | print RAM info ( total size, used and free) and Swap area info (total size, used, free)   |  no           | myfree | 
 
-## Examples

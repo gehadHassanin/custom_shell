@@ -2,6 +2,12 @@
 #define CMD_H_
 
 
+#define IS_INP_REDIRECTIONT(symbol) !strcmp(symbol, "<")
+#define IS_ERR_REDIRECTIONT(symbol) !strcmp(symbol, "2>")
+#define IS_APPEND(symbol)           !strcmp(symbol, ">>")
+#define IS_OUT_REDIRECTIONT(symbol) !strcmp(symbol, ">") ||\
+                                    !strcmp(symbol, ">>")
+
 
 /**
  * @brief  : This function is used to clear screen

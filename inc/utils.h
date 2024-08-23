@@ -5,12 +5,9 @@
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
 #define GREEN   "\033[32m"
-#define YELLOW  "\033[33m"
 #define BLUE    "\033[34m"
-#define MAGENTA "\033[35m"
 #define CYAN    "\033[36m"
 #define WHITE   "\033[37m"
-
 
 #define SIZE_HISTORY (1000)
 #define SIZE_BUFF    (100)
@@ -29,7 +26,10 @@
 #define SPACE_DELIMETER (" ")
 
 #define IS_FLAG_ON(flag)        (flag == kOn)
-#define IS_REDIR_SYMBOL(token)  (!strcmp(token, ">") || !strcmp(token, "<") || !strcmp(token, "2>"))
+#define IS_REDIR_SYMBOL(token)  (!strcmp(token, ">")  ||\
+                                 !strcmp(token, "<")  ||\
+                                 !strcmp(token, "2>") ||\
+                                 !strcmp(token, ">>"))
 
 
 typedef struct {

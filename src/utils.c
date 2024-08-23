@@ -89,7 +89,7 @@ void ExecuteInternalCmd(InputInfo_t* pInputInfo) {
     }
     if (!strcmp(pInputInfo->__token[0], "exit")) {
         write(STDOUT, "Goodbye\n", strlen("Goodbye\n"));
-        exit(EXIT_FAILURE);
+        exit(0);
     } else if (!strcmp(pInputInfo->__token[0], "mypwd")) {
 		ImplementPwdCommand(pInputInfo->token_num);
 	} else if (!strcmp(pInputInfo->__token[0], "help")) {
@@ -124,9 +124,7 @@ void ExecuteInternalCmd(InputInfo_t* pInputInfo) {
 	} else if (!strcmp(pInputInfo->__token[0], "cd")) {
 		ChangeCurrentDirectory(pInputInfo->token_num, pInputInfo->__token);
 	} else if (!strcmp(pInputInfo->__token[0], "envir")) {
-
 		ImplementEnvCommand(pInputInfo->token_num, pInputInfo->__token);
-
 	} else if (!strcmp(pInputInfo->__token[0], "type")) {
 		ImplementTypeCommand(pInputInfo->token_num, pInputInfo->__token);
 	} else if (!strcmp(pInputInfo->__token[0], "myclear")) {
@@ -157,6 +155,7 @@ void ExecuteInternalCmd(InputInfo_t* pInputInfo) {
 }
 
 void RedirectFile(int old_fd, int new_fd) {
+    close(new_fd);
     int32_t fd = dup2(old_fd, new_fd);  
     if (fd == -1) {
         perror("dup2");
